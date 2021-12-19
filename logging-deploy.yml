@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: logging-spring
+spec:
+  selector:
+    app: logging-spring
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 32000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logging-spring
+  labels:
+    app: logging-spring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logging-spring
+  template:
+    metadata:
+      labels:
+        app: logging-spring
+    spec:
+      containers:
+      - name: logging-spring
+        image: tranphuochiep/logging-spring:v1
+        ports:
+        - containerPort: 8080

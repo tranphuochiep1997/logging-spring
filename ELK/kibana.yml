@@ -1,0 +1,24 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: quickstart
+spec:
+  version: 7.16.1
+  http:
+    service:
+      spec:
+        type: NodePort
+        ports:
+        - name: http
+          port: 5601
+          protocol: TCP
+          targetPort: 5601
+          nodePort: 30560
+    tls:
+      selfSignedCertificate:
+        disabled: true  
+  # config:
+    # xpack.security.enabled: false
+  count: 1
+  elasticsearchRef:
+    name: quickstart
