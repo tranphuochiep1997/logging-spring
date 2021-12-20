@@ -30,5 +30,8 @@ spec:
       containers:
       - name: logging-spring
         image: tranphuochiep/logging-spring:v1
+        env:
+        - name: LOGSTASH_DESTINATION
+          value: "logstash-service:5044"
         ports:
         - containerPort: 8080

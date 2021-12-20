@@ -3,8 +3,22 @@
 	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+	
+	<springProperty scope="context" name="HOSTNAME" source="HOSTNAME" defaultValue="localhost" />
+	<springProperty scope="context" name="APPNAME" source="spring.application.name" defaultValue="springboot"/>
+	<springProperty scope="context" name="LOGSTASH_DESTINATION" source="logstash.destination"/>
+	
+	<appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <destination>${LOGSTASH_DESTINATION}</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"app_name": "${APPNAME}", "hostname": "${HOSTNAME}"}</customFields>
+        </encoder>
+    </appender>
+    
 	<root level="INFO">
-<!-- 		<appender-ref ref="CONSOLE" /> -->
-		<appender-ref ref="FILE" />
+		<appender-ref ref="CONSOLE" />
+<!-- 		<appender-ref ref="FILE" /> -->
+		<appender-ref ref="LOGSTASH"/>
 	</root>
 </configuration>
